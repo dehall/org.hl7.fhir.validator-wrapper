@@ -40,7 +40,20 @@ fun Route.validationModule() {
             }
             else -> {
                 try {
-                    call.respond(HttpStatusCode.OK, validationController.validateRequest(request))
+                    System.gc()
+                    val runtime = Runtime.getRuntime()
+                    var maxMemory = runtime.maxMemory()
+                    var freeMemory = runtime.freeMemory()
+                    val usedMemory = maxMemory - freeMemory
+                    val response = validationController.validateRequest(request)
+                    System.gc()
+                    maxMemory = runtime.maxMemory()
+                    freeMemory = runtime.freeMemory()
+
+                    val diff = (maxMemory - freeMemory) - usedMemory
+
+                    println("Est memory for " + request.cliContext.igs + " : " + diff + "b, " + (diff / (1024 * 1024)) + "mb");
+                    call.respond(HttpStatusCode.OK, response)
                 } catch (e: Exception) {
                     logger.error(e.localizedMessage)
                     call.respond(HttpStatusCode.InternalServerError, e.localizedMessage)

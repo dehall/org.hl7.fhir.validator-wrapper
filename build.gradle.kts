@@ -44,25 +44,25 @@ kotlin {
             useJUnit()
         }
     }
-    js () {
-        useCommonJs()
-        binaries.executable()
-        browser {
-            binaries.executable()
-            webpackTask {
-                cssSupport.enabled = true
-            }
-            runTask {
-                cssSupport.enabled = true
-            }
-            testTask {
-                useKarma {
-                    useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
-                }
-            }
-        }
-    }
+    // js () {
+    //     useCommonJs()
+    //     binaries.executable()
+    //     browser {
+    //         binaries.executable()
+    //         webpackTask {
+    //             cssSupport.enabled = true
+    //         }
+    //         runTask {
+    //             cssSupport.enabled = true
+    //         }
+    //         testTask {
+    //             useKarma {
+    //                 useChromeHeadless()
+    //                 webpackConfig.cssSupport.enabled = true
+    //             }
+    //         }
+    //     }
+    // }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -139,46 +139,46 @@ kotlin {
             }
 
         }
-        val jsMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-core:${property("ktorVersion")}")
+        // val jsMain by getting {
+        //     dependencies {
+        //         implementation("io.ktor:ktor-client-core:${property("ktorVersion")}")
 
-                implementation("io.ktor:ktor-client-js:${property("ktorVersion")}") //include http&websockets
-                implementation("io.ktor:ktor-client-json-js:${property("ktorVersion")}")
-                implementation("io.ktor:ktor-client-content-negotiation:${property("ktorVersion")}")
-                implementation("io.ktor:ktor-client-serialization-js:${property("ktorVersion")}")
+        //         implementation("io.ktor:ktor-client-js:${property("ktorVersion")}") //include http&websockets
+        //         implementation("io.ktor:ktor-client-json-js:${property("ktorVersion")}")
+        //         implementation("io.ktor:ktor-client-content-negotiation:${property("ktorVersion")}")
+        //         implementation("io.ktor:ktor-client-serialization-js:${property("ktorVersion")}")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-html-js:${property("kotlinxHtmlVersion")}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${property("kotlinxCoroutinesVersion")}")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:${property("ktorVersion")}")
+        //         implementation("org.jetbrains.kotlinx:kotlinx-html-js:${property("kotlinxHtmlVersion")}")
+        //         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${property("kotlinxCoroutinesVersion")}")
+        //         implementation("io.ktor:ktor-serialization-kotlinx-json:${property("ktorVersion")}")
 
-                implementation(project.dependencies.enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:${property("kotlinWrappersVersion")}"))
+        //         implementation(project.dependencies.enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:${property("kotlinWrappersVersion")}"))
 
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom")
 
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-redux")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-redux")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-redux")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-react-redux")
 
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-mui")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-mui-icons")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-mui")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-mui-icons")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
 
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-css")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-styled")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-css")
+        //         implementation("org.jetbrains.kotlin-wrappers:kotlin-styled")
 
-                implementation(npm("node-polyglot", "2.4.0"))
+        //         implementation(npm("node-polyglot", "2.4.0"))
 
-                implementation(npm("react-ace", "9.5.0"))
-                implementation(npm("ace-builds","^1.4.13" ))
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
-            }
-        }
+        //         implementation(npm("react-ace", "9.5.0"))
+        //         implementation(npm("ace-builds","^1.4.13" ))
+        //     }
+        // }
+        // val jsTest by getting {
+        //     dependencies {
+        //         implementation(kotlin("test-js"))
+        //     }
+        // }
     }
 }
 
@@ -233,17 +233,17 @@ application {
 }
 
 // include JS artifacts in any JAR we generate
-tasks.getByName<Jar>("jvmJar") {
-
-    val taskName = if (project.hasProperty("isProduction")) {
-        "jsBrowserProductionWebpack"
-    } else {
-        "jsBrowserDevelopmentWebpack"
-    }
-    val webpackTask = tasks.getByName<KotlinWebpack>(taskName)
-    dependsOn(webpackTask) // make sure JS gets compiled first
-    from(File(webpackTask.destinationDirectory, webpackTask.outputFileName)) // bring output file along into the JAR
-}
+// tasks.getByName<Jar>("jvmJar") {
+//     isZip64 = true
+//     val taskName = if (project.hasProperty("isProduction")) {
+//         "jsBrowserProductionWebpack"
+//     } else {
+//         "jsBrowserDevelopmentWebpack"
+//     }
+//     val webpackTask = tasks.getByName<KotlinWebpack>(taskName)
+//     dependsOn(webpackTask) // make sure JS gets compiled first
+//     from(File(webpackTask.destinationDirectory, webpackTask.outputFileName)) // bring output file along into the JAR
+// }
 
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
