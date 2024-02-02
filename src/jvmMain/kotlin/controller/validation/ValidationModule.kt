@@ -41,8 +41,9 @@ fun Route.validationModule() {
             else -> {
                 try {
                     call.respond(HttpStatusCode.OK, validationController.validateRequest(request))
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     logger.error(e.localizedMessage)
+                    e.printStackTrace()
                     call.respond(HttpStatusCode.InternalServerError, e.localizedMessage)
                 }
             }
